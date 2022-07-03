@@ -121,6 +121,12 @@ describe('Lottery Contract', () => {
         const difference = finalBalance - initialBalance;
 
         assert(difference > web3.utils.toWei(AMOUNT_MINUS_GAS, UNIT));
+
+        const EXPECTED_LENGTH = 0;
+        const players = await lottery.methods.getPlayers().call({
+            from: ACCOUNT
+        })
+        assert.strictEqual(players.length, EXPECTED_LENGTH)
     });
 
 })
