@@ -103,4 +103,24 @@ describe('Lottery Contract', () => {
         }
 
     });
+
+    it('should send money to winner and clear player list', async () => {
+        const ACCOUNT = accounts[0];
+        const AMOUNT = "2";
+        const UNIT = "ether"
+        const AMOUNT_MINUS_GAS = "1.8";
+
+        await lottery.methods.enter().send({
+            from: ACCOUNT,
+            value: web3.utils.toWei(AMOUNT, UNIT)
+        })
+
+        const initialBalance = await web3.eth.getBalance(ACCOUNT);
+        await lottery.methods.pickWinner().send({from: ACCOUNT});
+        const finalBalance = await web3.eth.getBalance(ACCOUNT);
+        const difference = finalBalance - initialBalance;
+
+        assert(difference > web3.utils.toWei(AMOUNT_MINUS_GAS, UNIT));
+    });
+
 })
