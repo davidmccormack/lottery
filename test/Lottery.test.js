@@ -38,4 +38,37 @@ describe('Lottery Contract', () => {
         assert.strictEqual(ACCOUNT, addresses[0])
 
     })
+
+    it('should allow multiple accounts to enter', async () => {
+        const UNIT = "ether";
+        const VAL = '0.02';
+        const ACCOUNT0 = accounts[0];
+        const ACCOUNT1 = accounts[1];
+        const ACCOUNT2 = accounts[2];
+
+        await lottery.methods.enter().send({
+            from: ACCOUNT0,
+            value: web3.utils.toWei(VAL, UNIT)
+        });
+
+        await lottery.methods.enter().send({
+            from: ACCOUNT1,
+            value: web3.utils.toWei(VAL, UNIT)
+        });
+
+        await lottery.methods.enter().send({
+            from: ACCOUNT2,
+            value: web3.utils.toWei(VAL, UNIT)
+        });
+
+        const addresses = await lottery.methods.getPlayers().call({
+            from: ACCOUNT0
+        });
+
+        assert.strictEqual(3, addresses.length);
+        assert.strictEqual(ACCOUNT0, addresses[0])
+        assert.strictEqual(ACCOUNT1, addresses[1])
+        assert.strictEqual(ACCOUNT2, addresses[2])
+
+    })
 })
