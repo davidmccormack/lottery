@@ -86,4 +86,21 @@ describe('Lottery Contract', () => {
         }
 
     });
+
+    it('should only allow manager to call pickWinner', async () => {
+        const NON_MANAGER_ACCOUNT = accounts[1];
+        const UNIT = 'ether';
+        const AMOUNT = "0.02";
+
+        try{
+            await lottery.methods.pickWinner.send({
+                from: NON_MANAGER_ACCOUNT,
+                value: web3.utils.toWei(AMOUNT,UNIT)
+            });
+            assert(false);
+        } catch (e) {
+            assert(e);
+        }
+
+    });
 })
