@@ -71,4 +71,19 @@ describe('Lottery Contract', () => {
         assert.strictEqual(ACCOUNT2, addresses[2])
 
     })
+
+    it('should require a minimum amount of wey', async () => {
+        const ACCOUNT = accounts[0];
+
+        try {
+            await lottery.methods.enter().send({
+                from: ACCOUNT,
+                value: 0
+            });
+            assert(false);
+        } catch (err) {
+            assert(err);
+        }
+
+    });
 })
